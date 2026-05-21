@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: 'Real-world problems Sweden for founders',
     description: PAGE_DESCRIPTIONS.home,
-    locale: 'en_SE',
+    locale: 'sv_SE',
   },
   twitter: {
     card: 'summary_large_image',
@@ -107,7 +107,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="sv">
       <body className={`${sans.variable} ${display.variable} ${mono.variable}`}>
         <a className="skip-link" href="#main-content">
           Skip to content

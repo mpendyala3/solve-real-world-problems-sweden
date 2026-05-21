@@ -479,7 +479,7 @@ function pageSchema(lang: Language) {
 }
 
 export function HomePage({ routeLabel }: { routeLabel?: string }) {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>('sv');
   const [current, setCurrent] = useState<CategoryId>(categoryOrder[0]);
   const [expanded, setExpanded] = useState(-1);
   const [query, setQuery] = useState('');
