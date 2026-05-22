@@ -1118,8 +1118,16 @@ footer {
   align-items: center;
 }
 
+.legal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .breadcrumb-row {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   color: var(--text-dim);
   font-size: 0.875rem;
 }
@@ -1150,6 +1158,7 @@ footer {
 
 .legal-header {
   margin-bottom: 1rem;
+  margin-top: 0.25rem;
 }
 
 .error-wrap {
