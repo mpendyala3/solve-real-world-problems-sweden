@@ -679,30 +679,32 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
               </button>
             </div>
 
-            {mobileMenuOpen ? (
-              <div className="mobile-nav-menu" aria-label="Mobile section links">
-                <a
-                  className={`nav-cta-pill ${activeHeaderSection === 'top-10-problems' ? 'active' : ''}`}
-                  href="#top-10-problems"
-                  onClick={() => {
-                    setActiveHeaderSection('top-10-problems');
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  {text.heroPrimary}
-                </a>
-                <a
-                  className={`nav-cta-pill ${activeHeaderSection === 'all-problems' ? 'active' : ''}`}
-                  href="#all-problems"
-                  onClick={() => {
-                    setActiveHeaderSection('all-problems');
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  {text.heroSecondary}
-                </a>
-              </div>
-            ) : null}
+            <div
+              className={`mobile-nav-menu ${mobileMenuOpen ? 'open' : ''}`}
+              aria-label="Mobile section links"
+              aria-hidden={!mobileMenuOpen}
+            >
+              <a
+                className={`nav-cta-pill ${activeHeaderSection === 'top-10-problems' ? 'active' : ''}`}
+                href="#top-10-problems"
+                onClick={() => {
+                  setActiveHeaderSection('top-10-problems');
+                  setMobileMenuOpen(false);
+                }}
+              >
+                {text.heroPrimary}
+              </a>
+              <a
+                className={`nav-cta-pill ${activeHeaderSection === 'all-problems' ? 'active' : ''}`}
+                href="#all-problems"
+                onClick={() => {
+                  setActiveHeaderSection('all-problems');
+                  setMobileMenuOpen(false);
+                }}
+              >
+                {text.heroSecondary}
+              </a>
+            </div>
           </nav>
         </div>
       </header>

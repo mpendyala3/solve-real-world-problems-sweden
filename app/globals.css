@@ -1298,6 +1298,23 @@ footer {
     display: grid;
     gap: 0.5rem;
     flex: 1 0 100%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-0.25rem);
+    transition:
+      max-height 0.32s ease,
+      opacity 0.24s ease,
+      transform 0.32s ease,
+      padding-top 0.32s ease;
+    padding-top: 0;
+  }
+
+  .mobile-nav-menu.open {
+    max-height: 10rem;
+    opacity: 1;
+    transform: translateY(0);
+    padding-top: 0.25rem;
   }
 
   .top-problems-desktop {
