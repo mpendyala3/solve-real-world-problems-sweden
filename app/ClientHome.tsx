@@ -526,11 +526,22 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
 
   const topProblemCards = useMemo<TopProblemCard[]>(
     () =>
-      topProblemCardRefs.map((id) => ({
-        id,
-        categoryName: categories[id][lang].name,
-        problem: presentProblem(lang, id, 1, categories[id].items[0][lang]),
-      })),
+      topProblemCardRefs.map((id) => {
+        const tuple = categories[id].items[0][lang];
+        const [rawTitle, rawDescription, exactSources] = tuple;
+
+        return {
+          id,
+          categoryName: categories[id][lang].name,
+          problem: {
+            title: rawTitle,
+            description: rawDescription,
+            exactSources,
+            sourceFamilies: Array.from(new Set(exactSources.map((tag) => sourceFamily(tag, lang)))).slice(0, 3),
+            scores: calculateProblemScores(id, 1, tuple),
+          },
+        };
+      }),
     [lang],
   );
 
