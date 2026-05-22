@@ -186,6 +186,29 @@ nav {
   flex: 1 1 auto;
 }
 
+.nav-cta-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.875rem;
+  padding: 0.6875rem 1.125rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  color: var(--text);
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.nav-cta-pill:hover {
+  transform: translateY(-0.0625rem);
+}
+
+.nav-cta-pill.active {
+  background: #fff;
+  color: #111;
+  border-color: #fff;
+}
+
 .lang-toggle {
   display: inline-flex;
   padding: 0.25rem;
@@ -1255,7 +1278,7 @@ footer {
     gap: 0.5rem;
   }
 
-  .nav-cta-links .btn {
+  .nav-cta-links .nav-cta-pill {
     width: 100%;
   }
 

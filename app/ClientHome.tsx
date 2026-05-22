@@ -437,6 +437,7 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
   const [current, setCurrent] = useState<CategoryId>(categoryOrder[0]);
   const [expanded, setExpanded] = useState(-1);
   const [expandedTopProblem, setExpandedTopProblem] = useState<CategoryId | null>(null);
+  const [activeHeaderSection, setActiveHeaderSection] = useState<'top-10-problems' | 'all-problems'>('top-10-problems');
   const [query, setQuery] = useState('');
   const [activeTopCard, setActiveTopCard] = useState(0);
   const categoryButtonRefs = useRef<Partial<Record<CategoryId, HTMLButtonElement | null>>>({});
@@ -458,6 +459,29 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
     if (typeof window === 'undefined') return;
     const searchTerm = new URLSearchParams(window.location.search).get('q');
     if (searchTerm) setQuery(searchTerm);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const syncHeaderSection = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'all-problems') {
+        setActiveHeaderSection('all-problems');
+        return;
+      }
+
+      if (hash === 'top-10-problems' || !hash) {
+        setActiveHeaderSection('top-10-problems');
+      }
+    };
+
+    syncHeaderSection();
+    window.addEventListener('hashchange', syncHeaderSection);
+
+    return () => {
+      window.removeEventListener('hashchange', syncHeaderSection);
+    };
   }, []);
 
   useEffect(() => {
@@ -614,10 +638,18 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
             </a>
 
             <div className="nav-cta-links" aria-label="Section links">
-              <a className="btn primary" href="#top-10-problems">
+              <a
+                className={`nav-cta-pill ${activeHeaderSection === 'top-10-problems' ? 'active' : ''}`}
+                href="#top-10-problems"
+                onClick={() => setActiveHeaderSection('top-10-problems')}
+              >
                 {text.heroPrimary}
               </a>
-              <a className="btn ghost" href="#all-problems">
+              <a
+                className={`nav-cta-pill ${activeHeaderSection === 'all-problems' ? 'active' : ''}`}
+                href="#all-problems"
+                onClick={() => setActiveHeaderSection('all-problems')}
+              >
                 {text.heroSecondary}
               </a>
             </div>
