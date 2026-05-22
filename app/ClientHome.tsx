@@ -641,14 +641,6 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
               </div>
             </a>
 
-            <div className="nav-links">
-              <a href="#top-10-problems">{text.navTop10}</a>
-              <a href="#all-problems">{text.navAllProblems}</a>
-              <a href="#method">{text.navMethod}</a>
-              <a href="#mission">{text.navMission}</a>
-              <Link href="/architecture/">{text.navArchitecture}</Link>
-            </div>
-
             <div className="nav-actions">
               <div className="lang-toggle" aria-label="Language toggle">
                 <button className={lang === 'sv' ? 'active' : ''} onClick={() => setLang('sv')} type="button">
