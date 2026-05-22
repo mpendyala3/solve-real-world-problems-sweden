@@ -585,6 +585,11 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
     visibleTopCards.push(...topProblemCards.slice(0, 5 - visibleTopCards.length));
   }
 
+  const topProblemDesktopColumns = [
+    topProblemCards.filter((_, index) => index % 2 === 0),
+    topProblemCards.filter((_, index) => index % 2 === 1),
+  ];
+
   return (
     <>
       <header className="nav-shell" id="home">
@@ -768,58 +773,62 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
             </div>
 
             <div className="top-problems-desktop" aria-label={text.swipeTitle}>
-              {topProblemCards.map((card) => {
-                const isOpen = expandedTopProblem === card.id;
+              {topProblemDesktopColumns.map((columnCards, columnIndex) => (
+                <div className="top-problems-desktop-column" key={columnIndex}>
+                  {columnCards.map((card) => {
+                    const isOpen = expandedTopProblem === card.id;
 
-                return (
-                  <article className={`top-problem-card-web ${isOpen ? 'open' : ''}`} key={card.id}>
-                    <div className="top-problem-card-web-head">
-                      <span className="top-problem-pill">{card.categoryName}</span>
-                      <button
-                        className="top-problem-expand"
-                        type="button"
-                        aria-expanded={isOpen}
-                        aria-label={isOpen ? text.close : text.open}
-                        onClick={() => setExpandedTopProblem(isOpen ? null : card.id)}
-                      >
-                        <span>›</span>
-                      </button>
-                    </div>
+                    return (
+                      <article className={`top-problem-card-web ${isOpen ? 'open' : ''}`} key={card.id}>
+                        <div className="top-problem-card-web-head">
+                          <span className="top-problem-pill">{card.categoryName}</span>
+                          <button
+                            className="top-problem-expand"
+                            type="button"
+                            aria-expanded={isOpen}
+                            aria-label={isOpen ? text.close : text.open}
+                            onClick={() => setExpandedTopProblem(isOpen ? null : card.id)}
+                          >
+                            <span>›</span>
+                          </button>
+                        </div>
 
-                    <h3>{card.problem.title}</h3>
+                        <h3>{card.problem.title}</h3>
 
-                    {isOpen ? (
-                      <div className="top-problem-card-expand">
-                        <div className="expand-copy">
-                          <p>{card.problem.description}</p>
-                        </div>
-                        <div className="score-grid">
-                          <div className="score-metric">
-                            <span>{text.severity}</span>
-                            <strong>{formatScoreOutOfTen(card.problem.scores.severity)}/10</strong>
+                        {isOpen ? (
+                          <div className="top-problem-card-expand">
+                            <div className="expand-copy">
+                              <p>{card.problem.description}</p>
+                            </div>
+                            <div className="score-grid">
+                              <div className="score-metric">
+                                <span>{text.severity}</span>
+                                <strong>{formatScoreOutOfTen(card.problem.scores.severity)}/10</strong>
+                              </div>
+                              <div className="score-metric">
+                                <span>{text.tam}</span>
+                                <strong>{formatScoreOutOfTen(card.problem.scores.tam)}/10</strong>
+                              </div>
+                              <div className="score-metric">
+                                <span>{text.whitespace}</span>
+                                <strong>{formatScoreOutOfTen(card.problem.scores.whitespace)}/10</strong>
+                              </div>
+                              <div className="score-metric">
+                                <span>{text.trygghet}</span>
+                                <strong>{formatScoreOutOfTen(card.problem.scores.trygghet)}/10</strong>
+                              </div>
+                            </div>
+                            <div className="expand-note">
+                              <span className="expand-label">{text.exactSources}</span>
+                              <p>{card.problem.exactSources.join(' · ')}</p>
+                            </div>
                           </div>
-                          <div className="score-metric">
-                            <span>{text.tam}</span>
-                            <strong>{formatScoreOutOfTen(card.problem.scores.tam)}/10</strong>
-                          </div>
-                          <div className="score-metric">
-                            <span>{text.whitespace}</span>
-                            <strong>{formatScoreOutOfTen(card.problem.scores.whitespace)}/10</strong>
-                          </div>
-                          <div className="score-metric">
-                            <span>{text.trygghet}</span>
-                            <strong>{formatScoreOutOfTen(card.problem.scores.trygghet)}/10</strong>
-                          </div>
-                        </div>
-                        <div className="expand-note">
-                          <span className="expand-label">{text.exactSources}</span>
-                          <p>{card.problem.exactSources.join(' · ')}</p>
-                        </div>
-                      </div>
-                    ) : null}
-                  </article>
-                );
-              })}
+                        ) : null}
+                      </article>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         </section>
