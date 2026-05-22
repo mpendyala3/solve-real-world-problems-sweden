@@ -105,6 +105,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .brand {
@@ -172,7 +173,17 @@ nav {
 .nav-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.75rem;
+  flex: 1 1 0;
+}
+
+.nav-cta-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex: 1 1 auto;
 }
 
 .lang-toggle {
@@ -1196,6 +1207,18 @@ footer {
     display: none;
   }
 
+  nav {
+    justify-content: space-between;
+    gap: 0.875rem;
+  }
+
+  .nav-cta-links {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   .top-problems-desktop {
     grid-template-columns: 1fr;
   }
@@ -1219,6 +1242,14 @@ footer {
 @media (max-width: 40rem) {
   .container {
     padding-inline: 1rem;
+  }
+
+  .nav-cta-links {
+    gap: 0.5rem;
+  }
+
+  .nav-cta-links .btn {
+    width: 100%;
   }
 
   .top-problems-desktop {
@@ -1306,11 +1337,6 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .hero-actions {
-    flex-direction: column;
-  }
-
-  .hero-actions .btn,
   .search-clear {
     width: 100%;
   }

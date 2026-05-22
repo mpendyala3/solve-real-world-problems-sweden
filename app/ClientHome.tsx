@@ -53,7 +53,7 @@ const copy = {
       { icon: 'person', value: 'från 50k personer', label: 'och växer' },
       { icon: 'spark', value: 'AI-driven', label: 'kuratering' },
     ] satisfies readonly HeroSignal[],
-    heroPrimary: 'Visa mig top problems',
+    heroPrimary: 'Visa mig top 10 problems',
     heroSecondary: 'Bläddra i alla kategorier',
     proofLabel: 'Vad du tittar på',
     proofItems: [
@@ -147,7 +147,7 @@ const copy = {
       { icon: 'person', value: 'from 50k people', label: 'and counting' },
       { icon: 'spark', value: 'AI-powered', label: 'curation' },
     ] satisfies readonly HeroSignal[],
-    heroPrimary: 'Show Me Top Pain Points',
+    heroPrimary: 'Show Me Top 10 Pain Points',
     heroSecondary: 'Browse All Categories',
     proofLabel: 'What you are looking at',
     proofItems: [
@@ -597,6 +597,15 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
               </div>
             </a>
 
+            <div className="nav-cta-links" aria-label="Section links">
+              <a className="btn primary" href="#top-10-problems">
+                {text.heroPrimary}
+              </a>
+              <a className="btn ghost" href="#all-problems">
+                {text.heroSecondary}
+              </a>
+            </div>
+
             <div className="nav-actions">
               <div className="lang-toggle" aria-label="Language toggle">
                 <button className={lang === 'sv' ? 'active' : ''} onClick={() => setLang('sv')} type="button">
@@ -639,14 +648,6 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                     </div>
                   </div>
                 ))}
-              </div>
-              <div className="hero-actions">
-                <a className="btn primary" href="#top-10-problems">
-                  {text.heroPrimary}
-                </a>
-                <a className="btn ghost" href="#all-problems">
-                  {text.heroSecondary}
-                </a>
               </div>
             </div>
 
