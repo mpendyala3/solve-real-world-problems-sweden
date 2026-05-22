@@ -438,6 +438,7 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
   const [expanded, setExpanded] = useState(-1);
   const [expandedTopProblem, setExpandedTopProblem] = useState<CategoryId | null>(null);
   const [activeHeaderSection, setActiveHeaderSection] = useState<'top-10-problems' | 'all-problems'>('top-10-problems');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeTopCard, setActiveTopCard] = useState(0);
   const categoryButtonRefs = useRef<Partial<Record<CategoryId, HTMLButtonElement | null>>>({});
@@ -468,11 +469,13 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
       const hash = window.location.hash.replace('#', '');
       if (hash === 'all-problems') {
         setActiveHeaderSection('all-problems');
+        setMobileMenuOpen(false);
         return;
       }
 
       if (hash === 'top-10-problems' || !hash) {
         setActiveHeaderSection('top-10-problems');
+        setMobileMenuOpen(false);
       }
     };
 
@@ -663,7 +666,43 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                   EN
                 </button>
               </div>
+              <button
+                className={`nav-menu-toggle ${mobileMenuOpen ? 'open' : ''}`}
+                type="button"
+                aria-expanded={mobileMenuOpen}
+                aria-label="Toggle menu"
+                onClick={() => setMobileMenuOpen((open) => !open)}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
             </div>
+
+            {mobileMenuOpen ? (
+              <div className="mobile-nav-menu" aria-label="Mobile section links">
+                <a
+                  className={`nav-cta-pill ${activeHeaderSection === 'top-10-problems' ? 'active' : ''}`}
+                  href="#top-10-problems"
+                  onClick={() => {
+                    setActiveHeaderSection('top-10-problems');
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  {text.heroPrimary}
+                </a>
+                <a
+                  className={`nav-cta-pill ${activeHeaderSection === 'all-problems' ? 'active' : ''}`}
+                  href="#all-problems"
+                  onClick={() => {
+                    setActiveHeaderSection('all-problems');
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  {text.heroSecondary}
+                </a>
+              </div>
+            ) : null}
           </nav>
         </div>
       </header>
