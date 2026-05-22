@@ -23,8 +23,10 @@ type SearchResult = {
 };
 
 type TopProblemCard = {
+  id: CategoryId;
   categoryName: string;
   question: string;
+  problem: ProblemPresentation;
 };
 
 type HeroSignal = {
@@ -482,6 +484,7 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
   const [lang, setLang] = useState<Language>('sv');
   const [current, setCurrent] = useState<CategoryId>(categoryOrder[0]);
   const [expanded, setExpanded] = useState(-1);
+  const [expandedTopProblem, setExpandedTopProblem] = useState<CategoryId | null>(null);
   const [query, setQuery] = useState('');
   const [activeTopCard, setActiveTopCard] = useState(0);
   const categoryButtonRefs = useRef<Partial<Record<CategoryId, HTMLButtonElement | null>>>({});
@@ -572,8 +575,10 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
   const topProblemCards = useMemo<TopProblemCard[]>(
     () =>
       topProblemCardRefs.map((id) => ({
+        id,
         categoryName: categories[id][lang].name,
         question: topProblemQuestions[lang][id],
+        problem: presentProblem(lang, id, 1, categories[id].items[0][lang]),
       })),
     [lang],
   );
@@ -797,6 +802,61 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                   ›
                 </button>
               </div>
+            </div>
+
+            <div className="top-problems-desktop" aria-label={text.swipeTitle}>
+              {topProblemCards.map((card) => {
+                const isOpen = expandedTopProblem === card.id;
+
+                return (
+                  <article className={`top-problem-card-web ${isOpen ? 'open' : ''}`} key={card.id}>
+                    <div className="top-problem-card-web-head">
+                      <span className="top-problem-pill">{card.categoryName}</span>
+                      <button
+                        className="top-problem-expand"
+                        type="button"
+                        aria-expanded={isOpen}
+                        aria-label={isOpen ? text.close : text.open}
+                        onClick={() => setExpandedTopProblem(isOpen ? null : card.id)}
+                      >
+                        <span>↗</span>
+                      </button>
+                    </div>
+
+                    <h3>{card.question}</h3>
+
+                    {isOpen ? (
+                      <div className="top-problem-card-expand">
+                        <div className="expand-copy">
+                          <p>{card.problem.description}</p>
+                        </div>
+                        <div className="score-grid">
+                          <div className="score-metric">
+                            <span>{text.severity}</span>
+                            <strong>{formatScoreOutOfTen(card.problem.scores.severity)}/10</strong>
+                          </div>
+                          <div className="score-metric">
+                            <span>{text.tam}</span>
+                            <strong>{formatScoreOutOfTen(card.problem.scores.tam)}/10</strong>
+                          </div>
+                          <div className="score-metric">
+                            <span>{text.whitespace}</span>
+                            <strong>{formatScoreOutOfTen(card.problem.scores.whitespace)}/10</strong>
+                          </div>
+                          <div className="score-metric">
+                            <span>{text.trygghet}</span>
+                            <strong>{formatScoreOutOfTen(card.problem.scores.trygghet)}/10</strong>
+                          </div>
+                        </div>
+                        <div className="expand-note">
+                          <span className="expand-label">{text.exactSources}</span>
+                          <p>{card.problem.exactSources.join(' · ')}</p>
+                        </div>
+                      </div>
+                    ) : null}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>

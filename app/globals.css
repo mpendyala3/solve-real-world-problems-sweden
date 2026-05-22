@@ -600,6 +600,12 @@ nav {
   display: none;
 }
 
+.top-problems-desktop {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
 .top-card-stack {
   position: relative;
   min-height: 24rem;
@@ -698,6 +704,82 @@ nav {
 
 .top-card-controls {
   display: none;
+}
+
+.top-problem-card-web {
+  min-height: 18.5rem;
+  border-radius: 1.8rem;
+  padding: 1rem 1rem 1.2rem;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: #f8f6f3;
+  color: #111;
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.22);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.top-problem-card-web.open {
+  transform: translateY(-0.3rem) scale(1.01);
+  border-color: rgba(20, 80, 255, 0.28);
+  box-shadow: 0 1.8rem 3.4rem rgba(0, 0, 0, 0.26);
+}
+
+.top-problem-card-web-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.top-problem-card-web h3 {
+  margin: 1rem 0 0;
+  font-size: clamp(1.76rem, 2.8vw, 2.56rem);
+  line-height: 0.96;
+  font-weight: 400;
+}
+
+.top-problem-expand {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #111;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition:
+    transform 0.28s ease,
+    background 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.top-problem-expand span {
+  display: inline-block;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: transform 0.28s ease;
+}
+
+.top-problem-card-web.open .top-problem-expand {
+  background: #1450ff;
+  border-color: #1450ff;
+  color: #fff;
+}
+
+.top-problem-card-web.open .top-problem-expand span {
+  transform: rotate(90deg);
+}
+
+.top-problem-card-expand {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
 }
 
 .search-panel {
@@ -1109,6 +1191,10 @@ footer {
     display: none;
   }
 
+  .top-problems-desktop {
+    grid-template-columns: 1fr;
+  }
+
   .hero-proof-grid {
     grid-template-columns: 1fr;
   }
@@ -1128,6 +1214,10 @@ footer {
 @media (max-width: 40rem) {
   .container {
     padding-inline: 1rem;
+  }
+
+  .top-problems-desktop {
+    display: none;
   }
 
   .top-problems-mobile {
