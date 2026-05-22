@@ -25,7 +25,6 @@ type SearchResult = {
 type TopProblemCard = {
   id: CategoryId;
   categoryName: string;
-  question: string;
   problem: ProblemPresentation;
 };
 
@@ -238,53 +237,6 @@ const topProblemCardRefs: CategoryId[] = [
   'fintech-payments',
   'logistics-delivery-infrastructure',
 ];
-
-const topProblemQuestions: Record<Language, Record<CategoryId, string>> = {
-  sv: {
-    'public-sector-welfare': 'Varför är beslut i ersättningsärenden så svåra att förutse?',
-    'housing-real-estate': 'Varför är kötiden till trygga hyresrätter fortfarande så lång?',
-    healthtech: 'Varför är det så svårt att få en tid i primärvården i rätt tid?',
-    'elder-care': 'Varför tappar hemtjänsten kontinuitet så ofta?',
-    'greentech-sustainability': 'Varför är elkostnader fortfarande så svåra att förutse?',
-    'integration-immigration': 'Varför tar vägen till fungerande svenska så lång tid?',
-    'consumer-services': 'Varför är det fortfarande så krångligt att säga upp abonnemang?',
-    'home-services': 'Varför är slutkostnaden för renoveringar så svår att lita på?',
-    'fintech-payments': 'Varför stänger BankID-beroende fortfarande ute vissa användare?',
-    'logistics-delivery-infrastructure': 'Varför hamnar paket fortfarande på opraktiska utlämningsställen?',
-    'mobility-micromobility': 'Varför är vardagspendling fortfarande så svår att lita på?',
-    'b2b-services': 'Varför är småföretags administrativa verktyg fortfarande så splittrade?',
-    saas: 'Varför är affärsmjukvara fortfarande så tung att införa och använda?',
-    edtech: 'Varför är det fortfarande svårt att hitta lärverktyg som verkligen passar vardagen?',
-    'food-beverage': 'Varför är det fortfarande så svårt att fatta enkla, trygga matbeslut i vardagen?',
-    ecommerce: 'Varför känns e-handelsreturer fortfarande så onödigt krångliga?',
-    'cold-climate-seasonal': 'Varför skapar vintervardagen fortfarande så mycket friktion i Sverige?',
-    'health-wellness-personal-care': 'Varför är egenvård och välmående fortfarande så svårt att följa upp i vardagen?',
-    'travel-experiences': 'Varför är resor och upplevelser fortfarande så svåra att planera med trygghet?',
-    'outdoor-friluftsliv': 'Varför är det fortfarande svårt att göra friluftsliv enkelt och tillgängligt för fler?',
-  },
-  en: {
-    'public-sector-welfare': 'Why are benefit decisions so hard to predict?',
-    'housing-real-estate': 'Why are rental housing queues still so long?',
-    healthtech: 'Why is it so hard to get a primary care appointment in time?',
-    'elder-care': 'Why does home care lose continuity so often?',
-    'greentech-sustainability': 'Why are electricity costs still so hard to predict?',
-    'integration-immigration': 'Why does the path to functional Swedish take so long?',
-    'consumer-services': 'Why is cancelling subscriptions still so frustrating?',
-    'home-services': 'Why are final renovation costs so hard to trust?',
-    'fintech-payments': 'Why does BankID dependence still exclude some users?',
-    'logistics-delivery-infrastructure': 'Why do parcels still end up at inconvenient pickup points?',
-    'mobility-micromobility': 'Why is everyday commuting still so hard to trust?',
-    'b2b-services': 'Why are small-business admin tools still so fragmented?',
-    saas: 'Why is business software still so heavy to adopt and use?',
-    edtech: 'Why is it still hard to find learning tools that fit everyday reality?',
-    'food-beverage': 'Why is it still hard to make simple, confident food decisions every day?',
-    ecommerce: 'Why do ecommerce returns still feel so unnecessarily painful?',
-    'cold-climate-seasonal': 'Why does winter life in Sweden still create so much friction?',
-    'health-wellness-personal-care': 'Why is everyday self-care still so hard to stay on top of?',
-    'travel-experiences': 'Why are trips and experiences still so hard to plan with confidence?',
-    'outdoor-friluftsliv': 'Why is it still hard to make outdoor life feel simple and accessible for more people?',
-  },
-};
 
 const titleOverrides = {
   sv: {
@@ -577,7 +529,6 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
       topProblemCardRefs.map((id) => ({
         id,
         categoryName: categories[id][lang].name,
-        question: topProblemQuestions[lang][id],
         problem: presentProblem(lang, id, 1, categories[id].items[0][lang]),
       })),
     [lang],
@@ -785,9 +736,9 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                   const depth = visibleTopCards.length - 1 - reversedIndex;
 
                   return (
-                    <article className={`top-problem-card depth-${depth}`} key={`${card.categoryName}-${card.question}`}>
+                    <article className={`top-problem-card depth-${depth}`} key={`${card.categoryName}-${card.problem.title}`}>
                       <span className="top-problem-pill">{card.categoryName}</span>
-                      <h3>{card.question}</h3>
+                      <h3>{card.problem.title}</h3>
                     </article>
                   );
                 })}
@@ -819,11 +770,11 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                         aria-label={isOpen ? text.close : text.open}
                         onClick={() => setExpandedTopProblem(isOpen ? null : card.id)}
                       >
-                        <span>↗</span>
+                        <span>&gt;</span>
                       </button>
                     </div>
 
-                    <h3>{card.question}</h3>
+                    <h3>{card.problem.title}</h3>
 
                     {isOpen ? (
                       <div className="top-problem-card-expand">

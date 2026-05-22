@@ -643,13 +643,13 @@ nav {
 .top-problem-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
-  padding: 0.35rem 0.8rem;
+  min-height: 1rem;
+  padding: 0.175rem 0.4rem;
   border-radius: 999px;
   border: 1px solid rgba(17, 17, 17, 0.12);
   background: rgba(255, 255, 255, 0.82);
   color: rgba(17, 17, 17, 0.8);
-  font-size: 0.82rem;
+  font-size: 0.41rem;
 }
 
 .top-problem-card.depth-0 {
@@ -741,8 +741,8 @@ nav {
 }
 
 .top-problem-expand {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 1.375rem;
+  height: 1.375rem;
   flex: 0 0 auto;
   border: 1px solid rgba(17, 17, 17, 0.14);
   border-radius: 999px;
@@ -759,19 +759,15 @@ nav {
 
 .top-problem-expand span {
   display: inline-block;
-  font-size: 1.15rem;
+  font-size: 0.6rem;
   line-height: 1;
-  transition: transform 0.28s ease;
+  font-weight: 700;
 }
 
 .top-problem-card-web.open .top-problem-expand {
   background: #1450ff;
   border-color: #1450ff;
   color: #fff;
-}
-
-.top-problem-card-web.open .top-problem-expand span {
-  transform: rotate(90deg);
 }
 
 .top-problem-card-expand {
