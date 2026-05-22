@@ -735,14 +735,14 @@ nav {
 
 .top-problem-card-web h3 {
   margin: 1rem 0 0;
-  font-size: clamp(1.76rem, 2.8vw, 2.56rem);
+  font-size: clamp(1.056rem, 1.68vw, 1.536rem);
   line-height: 0.96;
   font-weight: 400;
 }
 
 .top-problem-expand {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 1.65rem;
+  height: 1.65rem;
   flex: 0 0 auto;
   border: 1px solid rgba(17, 17, 17, 0.14);
   border-radius: 999px;
@@ -759,7 +759,7 @@ nav {
 
 .top-problem-expand span {
   display: inline-block;
-  font-size: 1.25rem;
+  font-size: 0.75rem;
   line-height: 1;
   font-weight: 700;
 }
