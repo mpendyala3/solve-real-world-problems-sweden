@@ -770,7 +770,7 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                         aria-label={isOpen ? text.close : text.open}
                         onClick={() => setExpandedTopProblem(isOpen ? null : card.id)}
                       >
-                        <span>&gt;</span>
+                        <span>›</span>
                       </button>
                     </div>
 
