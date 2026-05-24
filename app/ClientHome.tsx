@@ -119,6 +119,8 @@ const copy = {
     searchResultsTitle: 'Sökresultat',
     searchResultsNone: 'Ingen tydlig träff ännu. Testa bredare ord eller byt språk.',
     searchResultsCount: 'träffar',
+    selectCategoryTitle: 'Välj en kategori',
+    selectCategoryBody: 'Ingenting är förvalt. Klicka på en kategori för att se problemen.',
     clearSearch: 'Rensa',
     routeLabel: 'Aktiv route',
     featuredLabel: 'Utvald kategori',
@@ -213,6 +215,8 @@ const copy = {
     searchResultsTitle: 'Search results',
     searchResultsNone: 'No clear match yet. Try broader keywords or switch language.',
     searchResultsCount: 'results',
+    selectCategoryTitle: 'Choose a category',
+    selectCategoryBody: 'Nothing is selected by default. Click a category to view its problems.',
     clearSearch: 'Clear',
     routeLabel: 'Current route',
     featuredLabel: 'Featured category',
@@ -434,7 +438,7 @@ function pageSchema(lang: Language) {
 
 export function HomePage({ routeLabel }: { routeLabel?: string }) {
   const [lang, setLang] = useState<Language>('sv');
-  const [current, setCurrent] = useState<CategoryId>(categoryOrder[0]);
+  const [current, setCurrent] = useState<CategoryId | null>(null);
   const [expanded, setExpanded] = useState(-1);
   const [expandedTopProblem, setExpandedTopProblem] = useState<CategoryId | null>(null);
   const [activeHeaderSection, setActiveHeaderSection] = useState<'top-10-problems' | 'all-problems'>('top-10-problems');
@@ -488,6 +492,7 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
   }, []);
 
   useEffect(() => {
+    if (!current) return;
     categoryButtonRefs.current[current]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
   }, [current]);
 
@@ -543,9 +548,9 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
     );
   };
 
-  const category = categories[current];
-  const categoryMeta = category[lang];
-  const categoryItems = category.items.map((item, index) => presentProblem(lang, current, index + 1, item[lang]));
+  const category = current ? categories[current] : null;
+  const categoryMeta = category ? category[lang] : null;
+  const categoryItems = category && current ? category.items.map((item, index) => presentProblem(lang, current, index + 1, item[lang])) : [];
   const categoryRows = [
     categoryOrder.filter((_, idx) => idx % 2 === 0),
     categoryOrder.filter((_, idx) => idx % 2 === 1),
@@ -947,91 +952,100 @@ export function HomePage({ routeLabel }: { routeLabel?: string }) {
                 </div>
               </aside>
 
-              <section className="problem-panel" aria-label={categoryMeta.name}>
-                <div className="browser-title-inline">
-                  <div>
-                    <h3>{categoryMeta.name}</h3>
-                    <p>{categoryMeta.subtitle}</p>
-                  </div>
-                </div>
+              <section className="problem-panel" aria-label={categoryMeta?.name ?? text.allProblemsLabel}>
+                {categoryMeta ? (
+                  <>
+                    <div className="browser-title-inline">
+                      <div>
+                        <h3>{categoryMeta.name}</h3>
+                        <p>{categoryMeta.subtitle}</p>
+                      </div>
+                    </div>
 
-                <div className="problem-table">
-                  <div className="problem-table-head">
-                    <span>{text.problems}</span>
-                    <span>{text.score}</span>
-                    <span>{text.industry}</span>
-                    <span />
-                  </div>
+                    <div className="problem-table">
+                      <div className="problem-table-head">
+                        <span>{text.problems}</span>
+                        <span>{text.score}</span>
+                        <span>{text.industry}</span>
+                        <span />
+                      </div>
 
-                  <div className="problem-table-body">
-                    {categoryItems.map((item, idx) => {
-                      const isOpen = expanded === idx;
-                      return (
-                        <article className={`problem-row ${isOpen ? 'open' : ''}`} key={`${current}-${idx}`}>
-                            <div
-                              className="problem-row-main"
-                              role="button"
-                              tabIndex={0}
-                              aria-expanded={isOpen}
-                              aria-label={isOpen ? text.close : text.open}
-                              onClick={() => setExpanded(isOpen ? -1 : idx)}
-                              onKeyDown={(event) => {
-                                if (event.key === 'Enter' || event.key === ' ') {
-                                  event.preventDefault();
-                                  setExpanded(isOpen ? -1 : idx);
-                                }
-                              }}
-                            >
-                              <div className="problem-question-block">
-                                <h4>{item.title}</h4>
-                              </div>
-                              <div className="problem-score">{item.scores.score}</div>
-                              <div className="problem-industry">{categoryMeta.name}</div>
-                              <button
-                                className="expand-btn"
-                                type="button"
+                      <div className="problem-table-body">
+                        {categoryItems.map((item, idx) => {
+                          const isOpen = expanded === idx;
+                          return (
+                            <article className={`problem-row ${isOpen ? 'open' : ''}`} key={`${current}-${idx}`}>
+                              <div
+                                className="problem-row-main"
+                                role="button"
+                                tabIndex={0}
                                 aria-expanded={isOpen}
                                 aria-label={isOpen ? text.close : text.open}
                                 onClick={() => setExpanded(isOpen ? -1 : idx)}
+                                onKeyDown={(event) => {
+                                  if (event.key === 'Enter' || event.key === ' ') {
+                                    event.preventDefault();
+                                    setExpanded(isOpen ? -1 : idx);
+                                  }
+                                }}
                               >
-                                <span>{isOpen ? '–' : '+'}</span>
-                              </button>
-                            </div>
-
-                            {isOpen ? (
-                              <div className="problem-expand">
-                                <div className="expand-copy">
-                                  <p>{item.description}</p>
+                                <div className="problem-question-block">
+                                  <h4>{item.title}</h4>
                                 </div>
-                                <div className="score-grid">
-                                  <div className="score-metric">
-                                    <span>{text.severity}</span>
-                                    <strong>{formatScoreOutOfTen(item.scores.severity)}/10</strong>
-                                  </div>
-                                  <div className="score-metric">
-                                    <span>{text.tam}</span>
-                                    <strong>{formatScoreOutOfTen(item.scores.tam)}/10</strong>
-                                  </div>
-                                  <div className="score-metric">
-                                    <span>{text.whitespace}</span>
-                                    <strong>{formatScoreOutOfTen(item.scores.whitespace)}/10</strong>
-                                  </div>
-                                  <div className="score-metric">
-                                    <span>{text.trygghet}</span>
-                                    <strong>{formatScoreOutOfTen(item.scores.trygghet)}/10</strong>
-                                  </div>
-                                </div>
-                                <div className="expand-note">
-                                  <span className="expand-label">{text.exactSources}</span>
-                                  <p>{item.exactSources.join(' · ')}</p>
-                                </div>
+                                <div className="problem-score">{item.scores.score}</div>
+                                <div className="problem-industry">{categoryMeta.name}</div>
+                                <button
+                                  className="expand-btn"
+                                  type="button"
+                                  aria-expanded={isOpen}
+                                  aria-label={isOpen ? text.close : text.open}
+                                  onClick={() => setExpanded(isOpen ? -1 : idx)}
+                                >
+                                  <span>{isOpen ? '–' : '+'}</span>
+                                </button>
                               </div>
-                            ) : null}
-                          </article>
-                        );
-                      })}
+
+                              {isOpen ? (
+                                <div className="problem-expand">
+                                  <div className="expand-copy">
+                                    <p>{item.description}</p>
+                                  </div>
+                                  <div className="score-grid">
+                                    <div className="score-metric">
+                                      <span>{text.severity}</span>
+                                      <strong>{formatScoreOutOfTen(item.scores.severity)}/10</strong>
+                                    </div>
+                                    <div className="score-metric">
+                                      <span>{text.tam}</span>
+                                      <strong>{formatScoreOutOfTen(item.scores.tam)}/10</strong>
+                                    </div>
+                                    <div className="score-metric">
+                                      <span>{text.whitespace}</span>
+                                      <strong>{formatScoreOutOfTen(item.scores.whitespace)}/10</strong>
+                                    </div>
+                                    <div className="score-metric">
+                                      <span>{text.trygghet}</span>
+                                      <strong>{formatScoreOutOfTen(item.scores.trygghet)}/10</strong>
+                                    </div>
+                                  </div>
+                                  <div className="expand-note">
+                                    <span className="expand-label">{text.exactSources}</span>
+                                    <p>{item.exactSources.join(' · ')}</p>
+                                  </div>
+                                </div>
+                              ) : null}
+                            </article>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="empty-state">
+                    <h3>{text.selectCategoryTitle}</h3>
+                    <p>{text.selectCategoryBody}</p>
                   </div>
-                </div>
+                )}
               </section>
             </div>
           </div>
