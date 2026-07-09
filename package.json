@@ -12,12 +12,12 @@
   "dependencies": {
     "next": "15.5.18",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.2.6"
   },
   "devDependencies": {
     "@types/node": "22.15.21",
     "@types/react": "19.0.12",
-    "@types/react-dom": "19.0.5",
+    "@types/react-dom": "19.2.3",
     "typescript": "5.8.3"
   }
 }
